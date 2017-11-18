@@ -59,6 +59,12 @@
       <HintPath>E:\工具\Photon Server\Photon-OnPremise-Server-SDK_v4-0-29-11263\lib\PhotonHostRuntimeInterfaces.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>E:\工具\Protobuf-net\Full\net30\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="ProtoData">
+      <HintPath>.\ProtoData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -69,7 +75,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\PlayerData.cs" />
     <Compile Include="Handler\HandlerBase.cs" />
     <Compile Include="Handler\SyncPlayerHandler.cs" />
     <Compile Include="Handler\SyncTransformHandler.cs" />
@@ -82,6 +87,7 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Net\MyGameServer.cs" />
     <Compile Include="Threads\SyncPositionThread.cs" />
+    <Compile Include="Tools\BinSerializer.cs" />
     <Compile Include="Tools\NhibernateHelper.cs" />
     <Compile Include="Net\OperationCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

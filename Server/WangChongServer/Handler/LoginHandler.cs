@@ -31,27 +31,30 @@ namespace MyGameServer.Handler
         void OnLoginReceived(ClientPeer peer, OperationRequest operationRequest, SendParameters sendParameters)
         {
             //根据发送过来的请求获得用户名和密码
-            string username = DictTool.GetValue<byte, object>(operationRequest.Parameters, 1) as string;
-            string password = DictTool.GetValue<byte, object>(operationRequest.Parameters, 2) as string;
+            byte[] bytes = DictTool.GetValue<byte, object>(operationRequest.Parameters, 1) as byte[];
+            ProtoData.LoginC2S loginC2S = BinSerializer.DeSerialize<ProtoData.LoginC2S>(bytes);
+
             //连接数据库进行校验
             UserManager manager = new UserManager();
-            bool isSuccess = manager.VerifyUser(username, password);
+            bool isSuccess = manager.VerifyUser(loginC2S.username, loginC2S.password);
             OperationResponse response = new OperationResponse(operationRequest.OperationCode);
             //如果验证成功，把成功的结果利用response.ReturnCode返回成功给客户端
             if (isSuccess)
             {
                 response.ReturnCode = (short)ReturnCode.Success;
-                peer.username = username;
+                peer.username = loginC2S.username;
             }
             else//否则返回失败给客户端
             {
                 response.ReturnCode = (short)ReturnCode.Failed;
             }
+
+            ProtoData.LoginS2C loginS2C = new ProtoData.LoginS2C();
+            loginS2C.username = loginC2S.username;
             response.Parameters = new Dictionary<byte, object>();
-            response.Parameters.Add(1, username);
+            response.Parameters.Add(1, BinSerializer.Serialize(loginS2C));
             //把上面的回应给客户端
             peer.SendOperationResponse(response, sendParameters);
-
         }
 
         // 注册请求的处理的代码
