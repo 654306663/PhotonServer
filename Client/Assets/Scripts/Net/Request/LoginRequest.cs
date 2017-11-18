@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using ProtoData;
 
 namespace Net
 {
@@ -12,9 +13,12 @@ namespace Net
         /// </summary>
         public void SendLoginRequest(string username, string password)
         {
+            LoginC2S loginC2S = new LoginC2S();
+            loginC2S.username = username;
+            loginC2S.password = password;
+
             Dictionary<byte, object> data = new Dictionary<byte, object>();
-            data.Add(1, username);
-            data.Add(2, password);
+            data.Add(1, BinSerializer.Serialize(loginC2S));
             PhotonEngine.Peer.OpCustom((byte)OperationCode.Login, data, true);
         }
 

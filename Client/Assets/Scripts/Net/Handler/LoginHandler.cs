@@ -37,7 +37,11 @@ namespace Net
             {
                 Debug.LogError("用户名和密码验证成功");
 
-                PhotonEngine.username = DictTool.GetValue<byte, object>(response.Parameters, 1) as string;
+                byte[] bytes = DictTool.GetValue<byte, object>(response.Parameters, 1) as byte[];
+
+                ProtoData.LoginS2C loginS2C = BinSerializer.DeSerialize<ProtoData.LoginS2C>(bytes);
+                PhotonEngine.username = loginS2C.username;
+                Debug.Log(PhotonEngine.username);
                 //验证成功，跳转到下一个场景
                 UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 

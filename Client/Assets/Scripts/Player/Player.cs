@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
         SyncPlayerRequest.Instance.SendSyncPlayerRequest();
 
         //参数一 方法名，参数二 从等多久后开始执行这个方法  参数三 同步的时间速率。这里一秒同步十次
-        InvokeRepeating("SyncPosition", 3, 1 / 10f);//重复调用某个方法  
+        InvokeRepeating("SyncPosition", 3, 0.03f);//重复调用某个方法  
     }
     void Update()
     {
@@ -57,11 +57,11 @@ public class Player : MonoBehaviour
         playerDic.Add(username, go);//利用集合保存所有的其他客户端
     }
 
-    public void OnSyncPositionEvent(List<PlayerData> playerDataList)
+    public void OnSyncPositionEvent(List<ProtoData.SyncPositionEvtS2C.PositionData> positionDataList)
     {
-        foreach (PlayerData pd in playerDataList)//遍历所有的数据
+        foreach (ProtoData.SyncPositionEvtS2C.PositionData pd in positionDataList)//遍历所有的数据
         {
-            GameObject go = DictTool.GetValue<string, GameObject>(playerDic, pd.Username);//根据传递过来的Username去找到所对应的实例化出来的Player
+            GameObject go = DictTool.GetValue<string, GameObject>(playerDic, pd.username);//根据传递过来的Username去找到所对应的实例化出来的Player
 
             //如果查找到了相应的角色，就把相应的位置信息赋值给这个角色的position
             if (go != null)
